@@ -33,7 +33,19 @@ public class ServeurThread extends Thread{
 	
 
 	public void envoiMetadonnees(String repertoireSource) {
-		File fichier = new File();
+		String pathName=repertoireSource;
+		File [] fichiersRep;
+		
+		File fichier = new File(pathName);
+		String chemin = fichier.getPath();
+		String name = fichier.getName();
+		long lastModif =  fichier.lastModified();
+		long sizeFile  = fichier.length();
+		
+		if (fichier.isDirectory()) {
+		// Récupère les fichiers contenus dans le dossier
+		fichiersRep = fichier.listFiles();
+		}
 		
 	}
 }
