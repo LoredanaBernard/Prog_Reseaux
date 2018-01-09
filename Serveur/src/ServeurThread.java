@@ -41,8 +41,17 @@ public class ServeurThread extends Thread{
 	
 
 
-	// POUR VENDREDI : FINIR RECUPERATION METADONNEES ET ENVOI + ENVOI FICHIERS
-	
+	// POUR VENDREDI : FINIR RECUPERATION METADONNEES ET ENVOI + ENVOI FICHIERS	fonction rec(Dossier Source){
+/*	    list = récupérer liste dossier dans arborescene;
+	    for(objet o : list){
+	      if ( o est un dossier){
+	          rec(Dossier o)
+	      }
+	      else{
+	        Afficher Métadonnées de o
+	      }
+	    }
+	}*/
 	
 	// Met les métadonnées dans un fichier qui sera envoyé au client 
 	public File Metadonnees(String repertoireSource) {
@@ -52,6 +61,7 @@ public class ServeurThread extends Thread{
 		File [] fichiersRep;
 		ArrayList<File> aAnalyser = new ArrayList<File>();
 		ArrayList<File> dejaAnalyse = new ArrayList<File>();
+		
 		boolean resteFichier = true;
 		
 		String parent;
