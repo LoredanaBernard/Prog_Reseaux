@@ -38,9 +38,16 @@ public class ServeurThread extends Thread{
 //		long lastModif =  fichier.lastModified();
 //		long sizeFile  = fichier.length();
 //	}
+	
 
+
+	// POUR VENDREDI : FINIR RECUPERATION METADONNEES ET ENVOI + ENVOI FICHIERS
+	
+	
+	// Met les métadonnées dans un fichier qui sera envoyé au client 
 	public File Metadonnees(String repertoireSource) {
-		File metadonnees = new File();
+		String localPath="";  // Pour le test
+		File metadonnees = new File(localPath);
 		String pathName=repertoireSource;
 		File [] fichiersRep;
 		ArrayList<File> aAnalyser = new ArrayList<File>();
@@ -83,5 +90,10 @@ public class ServeurThread extends Thread{
 		}
 		
 	return metadonnees;	
+	}
+	
+	// Envoi les fichiers au client
+	public void envoiFichiers(String repertoireSource) {
+		
 	}
 }
