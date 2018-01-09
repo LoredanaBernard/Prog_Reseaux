@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -69,9 +70,21 @@ public class SyncEsclave {
 		}
 	}
 	
-	//public boolean comparerMetadonnes() {
+	public boolean comparerMetadonnes(String metaDonnee) {
+		//File file = new file(arg[3]);
+		String filepath  metadonnee;
+		FileReader donnee = new FileReader(filepath);
+		BufferedReader stock = new BufferedReader(donnee);
 		
-//	}
+		String line = br.readLine();
+		while(line != null ) {
+			System.out.println(line);
+		}
+		String chemin = donnees.getPath();
+		String name = donnees.getName();
+		long lastModif =  donnees.lastModified();
+		long sizeFile  = donnees.length();
+	}
 	
 	
 
