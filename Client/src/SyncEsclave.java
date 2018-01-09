@@ -23,12 +23,12 @@ public class SyncEsclave {
 		serveurPort = args[1];
 		numPort = Integer.parseInt(serveurPort);
 		repertoireCible = args[2];
-		repertoireSource = args[3];
-				
+		repertoireSource = args[3];				
 	}
 	
-	public SyncEsclave(int port){
-		initialize(port);
+	
+	public SyncEsclave(){
+		initialize();
 	}
 
 	public void stopClient() throws IOException{
@@ -49,10 +49,10 @@ public class SyncEsclave {
 	}
 
 	// Initialisation du client
-	public void initialize(int port){
+	public void initialize(){
 		try{
 			inFromUser = new BufferedReader( new InputStreamReader(System.in));
-			clientSocket = new Socket("localhost", port);
+			clientSocket = new Socket("localhost", numPort);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		}
