@@ -42,16 +42,28 @@ public class ServeurThread extends Thread{
 
 
 	// POUR VENDREDI : FINIR RECUPERATION METADONNEES ET ENVOI + ENVOI FICHIERS	fonction rec(Dossier Source){
-/*	    list = récupérer liste dossier dans arborescene;
-	    for(objet o : list){
-	      if ( o est un dossier){
-	          rec(Dossier o)
+   public void recEnvoi	(String dossierSource) {
+	   File [] fichiers;
+	   ArrayList<File> listFichier = new ArrayList<File>();
+	   File currentFile = new File(dossierSource);
+	   fichiers = currentFile.listFiles();
+	   // Ajout à la liste de fichiers 
+	   for ( int i=0 ; i<fichiers.length ; i ++) {
+			listFichier.add(fichiers[i]);
+		}
+	   
+	    for(File f : listFichier){
+	      if ( f.isDirectory()){
+	    	  recEnvoi(f.getPath());
+	    	  
 	      }
 	      else{
-	        Afficher Métadonnées de o
+	       // Envoi des Métadonnées de f
+	    	  
+	    	  listFichier.remove(f);
 	      }
 	    }
-	}*/
+	}
 	
 	// Met les métadonnées dans un fichier qui sera envoyé au client 
 	public File Metadonnees(String repertoireSource) {
