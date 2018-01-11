@@ -55,16 +55,20 @@ public class ServeurThread extends Thread{
 	    for(File f : listFichier){
 	      if ( f.isDirectory()){
 	    	  recEnvoi(f.getPath());
-	    	  
 	      }
 	      else{
 	       // Envoi des Métadonnées de f
-	    	  
+	    	// Envoi du nom, dateModif, chemin, et taille de chaque fichier   
 	    	  listFichier.remove(f);
 	      }
 	    }
+	    
+	    if(listFichier.size() == 0) {
+	    	// envoyer stop au client 
+	    }
 	}
 	
+   
 	// Met les métadonnées dans un fichier qui sera envoyé au client 
 	public File Metadonnees(String repertoireSource) {
 		String localPath="";  // Pour le test
