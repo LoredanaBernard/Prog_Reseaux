@@ -178,14 +178,21 @@ public class SyncEsclave {
 	// Renvoi une ArrayList des métadonnées des fichiers à envoyer
 	public void comparaisonMetadonneesListes(ArrayList<Metadonnee> metaClient, ArrayList<Metadonnee> metaServeur) {
 		int estEgal=-1;
-		boolean estExistant = false;
+		boolean estExistant;
+		boolean aModif;
 		for ( Metadonnee s : metaClient) {
 			for ( Metadonnee c : metaServeur) {
 				 if ( s.name.equals(c.name)) {
 					 estEgal = comparerMetadonnee(s,c);
-					 switch (estEgal) {
-					 case 0;
 					 
+					 switch (estEgal) {
+					 case 0:
+						 estExistant = false;
+					 case 2 : 
+						 aModif = true;
+					 case 1 :
+						 estExistant = true;
+						 
 					 }
 						 
 				 }
