@@ -27,7 +27,8 @@ public class SyncEsclave {
 	}
 	
 	
-	public SyncEsclave(){
+	public SyncEsclave(String[] args){
+		recuperationArg(args);
 		initialize();
 	}
 
@@ -52,6 +53,7 @@ public class SyncEsclave {
 	public void initialize(){
 		try{
 			inFromUser = new BufferedReader( new InputStreamReader(System.in));
+			System.out.println(numPort);
 			clientSocket = new Socket("localhost", numPort);
 			outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -73,6 +75,30 @@ public class SyncEsclave {
 		
 //	}
 	
+	public static void main(String[] args) throws IOException {
+		
+		SyncEsclave test = new SyncEsclave(args);
+		test.send("D:/ENSIM/Projet");
+		while(true) {
+			System.out.println(test.inFromServer.readLine());
+		}
+	}
+	
+
+
+
+	/*public void receptionMedadonnees() throws IOException {
+		String ligneMeta = new String();
+		
+		do {
+			ligneMeta = inFromServer.readLine();
+			String [] metadonnes = ligneMeta.split(" ");
+		}while (!ligneMeta.equals("stop"));
+		
+		
+	}
+
+	*/
 	
 
 
