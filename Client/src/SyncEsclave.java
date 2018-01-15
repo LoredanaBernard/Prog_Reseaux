@@ -1,13 +1,16 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class SyncEsclave {
 
 	String message;
-	BufferedReader inFromUser,inFromServer;
+	BufferedReader inFromUser;
+	static BufferedReader inFromServer;
 	DataOutputStream outToServer;
 	Socket clientSocket;
 	
@@ -15,7 +18,10 @@ public class SyncEsclave {
 	String serveurPort;
 	int numPort;
 	String repertoireCible;
-	String repertoireSource;
+	static String repertoireSource;
+	static ArrayList <Metadonnee> listeMetadonnees = new ArrayList<Metadonnee>();
+	static ArrayList<Metadonnee> listeMetaClient = new ArrayList<Metadonnee>();
+	static ArrayList<Metadonnee> liste = new ArrayList<Metadonnee>();
 	
 	// Récupère les données en argument
 	public void recuperationArg(String[] args) {
@@ -80,26 +86,111 @@ public class SyncEsclave {
 		SyncEsclave test = new SyncEsclave(args);
 		test.send("D:/ENSIM/Projet");
 		while(true) {
-			System.out.println(test.inFromServer.readLine());
+		//	System.out.println(test.inFromServer.readLine());
+			listeMetadonnees = receptionMedadonnees();
+		afficherMetaListe(listeMetadonnees);
+		recListe("D:/ENSIM/Projet");
+		System.out.println("Métadonnées des fichiers client");
+		afficherMetaListe(listeMetaClient);
+		}
+		
+	}
+	
+
+
+
+	// retourne une arrayList contenant des objets métadonnées pour chaque fichier
+	public static ArrayList<Metadonnee> receptionMedadonnees() throws IOException {
+		ArrayList<Metadonnee> listMeta = new ArrayList<Metadonnee>();
+		String ligneMeta = new String();
+		Metadonnee m ;
+		
+		ligneMeta = inFromServer.readLine();
+		while (!ligneMeta.equals("STOP")) {
+			String [] meta = ligneMeta.split(" ");
+			
+			//System.out.println(" meta[1] " + meta[1] + " meta[2] " + meta[2] + " meta[3] " + meta[3] + " meta[4] " + meta[4]);
+			 m = new Metadonnee(meta[1], meta[2], meta[3], meta[4]);
+			listMeta.add(m);
+			ligneMeta = inFromServer.readLine();
+		}
+		
+		return listMeta;
+	}
+	
+	
+	public static void afficherMetaListe(ArrayList<Metadonnee> liste) {
+		System.out.println("Début de la liste des métadonnées");
+		for ( Metadonnee m : liste) {
+			System.out.println("Nom : " + m.name + " ; Chemin " + m.path + " ; Last Modif " + m.lastModif + " ; Taille " + m.size);
+			
+		}
+		System.out.println("Fin des métadonnées");
+	}
+	
+	
+	public static void recListe(String path){
+		File [] fichiers;
+		ArrayList<File> listFichier = new ArrayList<File>();
+		File currentFile = new File(path);
+		fichiers = currentFile.listFiles();
+		// Ajout à la liste de fichiers 
+		for ( int i=0 ; i<fichiers.length ; i ++) {
+			listFichier.add(fichiers[i]);
+		}
+		for(File f : listFichier){
+			if ( f.isDirectory()){
+				recListe(f.getPath());
+			}
+			else{
+				// ajout métadonnées à la liste
+				f.getPath();
+				f.getName();
+				String modif = String.valueOf(f.lastModified());
+				String taille = String.valueOf(f.length());	
+				System.out.println("AJOUT METADONNEE");
+				listeMetaClient.add(new Metadonnee (f.getPath(), f.getName(), modif, taille));
+			}
 		}
 	}
 	
-
-
-
-	/*public void receptionMedadonnees() throws IOException {
-		String ligneMeta = new String();
-		
-		do {
-			ligneMeta = inFromServer.readLine();
-			String [] metadonnes = ligneMeta.split(" ");
-		}while (!ligneMeta.equals("stop"));
-		
-		
+	public int comparerMetadonnee(Metadonnee s, Metadonnee c) {
+		int estEgal= -1;
+		// Si les fichiers sont égaux
+		if ( s.equals(c)) {
+			// estEgal passe à 1
+			estEgal = 1;
+		}
+		else {
+			// Si le fichier venant du serveur est plus récent
+			if ((s.name.equals(c.name)) && (s.path.equals(c.path)) && (s.lastModif>c.lastModif)) {
+				estEgal = 2;
+			}
+			else {
+				// Les fichiers ne sont pas égaux
+				estEgal = 0;
+			}
+		}		
+		return estEgal;
 	}
-
-	*/
 	
-
+	
+	// Renvoi une ArrayList des métadonnées des fichiers à envoyer
+	public void comparaisonMetadonneesListes(ArrayList<Metadonnee> metaClient, ArrayList<Metadonnee> metaServeur) {
+		int estEgal=-1;
+		boolean estExistant = false;
+		for ( Metadonnee s : metaClient) {
+			for ( Metadonnee c : metaServeur) {
+				 if ( s.name.equals(c.name)) {
+					 estEgal = comparerMetadonnee(s,c);
+					 switch (estEgal) {
+					 case 0;
+					 
+					 }
+						 
+				 }
+			}
+		}
+	}
 
 }
