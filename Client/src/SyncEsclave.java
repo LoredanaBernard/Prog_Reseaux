@@ -22,6 +22,10 @@ public class SyncEsclave {
 	static ArrayList <Metadonnee> listeMetadonnees = new ArrayList<Metadonnee>();
 	static ArrayList<Metadonnee> listeMetaClient = new ArrayList<Metadonnee>();
 	static ArrayList<Metadonnee> liste = new ArrayList<Metadonnee>();
+	static ArrayList<Metadonnee> fichiersNonExistants = new ArrayList<Metadonnee>();
+	static ArrayList<Metadonnee> fichiersARemplacer = new ArrayList<Metadonnee>();
+
+
 	
 	// Récupère les données en argument
 	public void recuperationArg(String[] args) {
@@ -154,6 +158,7 @@ public class SyncEsclave {
 		}
 	}
 	
+	// Comparaison des métadonnées 
 	public int comparerMetadonnee(Metadonnee s, Metadonnee c) {
 		int estEgal= -1;
 		// Si les fichiers sont égaux
@@ -167,7 +172,7 @@ public class SyncEsclave {
 				estEgal = 2;
 			}
 			else {
-				// Les fichiers ne sont pas égaux
+				// Les fichiers n'ont rien en commun
 				estEgal = 0;
 			}
 		}		
@@ -178,13 +183,16 @@ public class SyncEsclave {
 	// Renvoi une ArrayList des métadonnées des fichiers à envoyer
 	public void comparaisonMetadonneesListes(ArrayList<Metadonnee> metaClient, ArrayList<Metadonnee> metaServeur) {
 		int estEgal=-1;
-		boolean estExistant;
-		boolean aModif;
+		boolean estExistant = true;
+		boolean aModif = false;
+		
+		// Parcours des listes de métadonnées du serveur et client
 		for ( Metadonnee s : metaClient) {
 			for ( Metadonnee c : metaServeur) {
+				// Si le nom est le même, on regarde si le fichier est une version antérieure ou non 
 				 if ( s.name.equals(c.name)) {
-					 estEgal = comparerMetadonnee(s,c);
-					 
+					 // Comparaison des métadonnées entre elles 
+					 estEgal = comparerMetadonnee(s,c);					 
 					 switch (estEgal) {
 					 case 0:
 						 estExistant = false;
@@ -192,10 +200,22 @@ public class SyncEsclave {
 						 aModif = true;
 					 case 1 :
 						 estExistant = true;
-						 
 					 }
-						 
 				 }
+				 // Sinon le fichier n'existe pas et sera à créer 
+				 else {
+					 estExistant = false;
+				 }
+			}
+			// Une fois qu'on a parcouru tous les fichiers du client
+			// On ajoute aux listes 
+			if ( aModif == true) {
+				fichiersARemplacer.add(s);
+			}
+			else {
+				if (estExistant == false) {
+					fichiersNonExistants.add(s);
+				}
 			}
 		}
 	}
