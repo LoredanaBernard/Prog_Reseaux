@@ -1,4 +1,4 @@
-import static org.junit.jupiter.api.Assertions.fail;
+package ensim.tp.Client_Reseaux;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,8 +8,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
 
 public class SyncEsclave {
 
@@ -32,7 +30,7 @@ public class SyncEsclave {
 
 
 	
-	// Récupère les données en argument
+	// RÃ©cupÃ¨re les donnÃ©es en argument
 	public void recuperationArg(String[] args) {
 		serveurNom = args[0];
 		serveurPort = args[1];
@@ -86,21 +84,9 @@ public class SyncEsclave {
 		}
 	}
 	
-	public boolean comparerMetadonnes(String metaDonnee) {
-		//File file = new file(arg[3]);
-		String filepath  metadonnee;
-		FileReader donnee = new FileReader(filepath);
-		BufferedReader stock = new BufferedReader(donnee);
+	//public boolean comparerMetadonnes() {
 		
-		String line = br.readLine();
-		while(line != null ) {
-			System.out.println(line);
-		}
-		String chemin = donnees.getPath();
-		String name = donnees.getName();
-		long lastModif =  donnees.lastModified();
-		long sizeFile  = donnees.length();
-	}
+//	}
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -111,7 +97,7 @@ public class SyncEsclave {
 			listeMetadonnees = receptionMedadonnees();
 		afficherMetaListe(listeMetadonnees);
 		recListe("D:/ENSIM/Projet");
-		System.out.println("Métadonnées des fichiers client");
+		System.out.println("MÃ©tadonnÃ©es des fichiers client");
 		afficherMetaListe(listeMetaClient);
 		}
 		
@@ -120,7 +106,7 @@ public class SyncEsclave {
 
 
 
-	// retourne une arrayList contenant des objets métadonnées pour chaque fichier
+	// retourne une arrayList contenant des objets mÃ©tadonnÃ©es pour chaque fichier
 	public static ArrayList<Metadonnee> receptionMedadonnees() throws IOException {
 		ArrayList<Metadonnee> listMeta = new ArrayList<Metadonnee>();
 		String ligneMeta = new String();
@@ -141,12 +127,12 @@ public class SyncEsclave {
 	
 	
 	public static void afficherMetaListe(ArrayList<Metadonnee> liste) {
-		System.out.println("Début de la liste des métadonnées");
+		System.out.println("DÃ©but de la liste des mÃ©tadonnÃ©es");
 		for ( Metadonnee m : liste) {
 			System.out.println("Nom : " + m.name + " ; Chemin " + m.path + " ; Last Modif " + m.lastModif + " ; Taille " + m.size);
 			
 		}
-		System.out.println("Fin des métadonnées");
+		System.out.println("Fin des mÃ©tadonnÃ©es");
 	}
 	
 	
@@ -155,7 +141,7 @@ public class SyncEsclave {
 		ArrayList<File> listFichier = new ArrayList<File>();
 		File currentFile = new File(path);
 		fichiers = currentFile.listFiles();
-		// Ajout à la liste de fichiers 
+		// Ajout Ã  la liste de fichiers 
 		for ( int i=0 ; i<fichiers.length ; i ++) {
 			listFichier.add(fichiers[i]);
 		}
@@ -164,7 +150,7 @@ public class SyncEsclave {
 				recListe(f.getPath());
 			}
 			else{
-				// ajout métadonnées à la liste
+				// ajout mÃ©tadonnÃ©es Ã  la liste
 				f.getPath();
 				f.getName();
 				String modif = String.valueOf(f.lastModified());
@@ -175,16 +161,16 @@ public class SyncEsclave {
 		}
 	}
 	
-	// Comparaison des métadonnées 
+	// Comparaison des mÃ©tadonnÃ©es 
 	public int comparerMetadonnee(Metadonnee s, Metadonnee c) {
 		int estEgal= -1;
-		// Si les fichiers sont égaux
+		// Si les fichiers sont Ã©gaux
 		if ( s.equals(c)) {
-			// estEgal passe à 1
+			// estEgal passe Ã  1
 			estEgal = 1;
 		}
 		else {
-			// Si le fichier venant du serveur est plus récent
+			// Si le fichier venant du serveur est plus rÃ©cent
 			if ((s.name.equals(c.name)) && (s.path.equals(c.path)) && (s.lastModif>c.lastModif)) {
 				estEgal = 2;
 			}
@@ -197,18 +183,18 @@ public class SyncEsclave {
 	}
 	
 	
-	// Renvoi une ArrayList des métadonnées des fichiers à envoyer
+	// Renvoi une ArrayList des mÃ©tadonnÃ©es des fichiers Ã  envoyer
 	public void comparaisonMetadonneesListes(ArrayList<Metadonnee> metaClient, ArrayList<Metadonnee> metaServeur) {
 		int estEgal=-1;
 		boolean estExistant = true;
 		boolean aModif = false;
-		
-		// Parcours des listes de métadonnées du serveur et client
-		for ( Metadonnee s : metaClient) {
-			for ( Metadonnee c : metaServeur) {
-				// Si le nom est le même, on regarde si le fichier est une version antérieure ou non 
+
+		// Parcours des listes de mÃ©tadonnÃ©es du serveur et client
+		for ( Metadonnee s : metaServeur) {
+			for ( Metadonnee c : metaClient) {
+				// Si le nom est le mÃªme, on regarde si le fichier est une version antÃ©rieure ou non 
 				 if ( s.name.equals(c.name)) {
-					 // Comparaison des métadonnées entre elles 
+					 // Comparaison des mÃ©tadonnÃ©es entre elles 
 					 estEgal = comparerMetadonnee(s,c);					 
 					 switch (estEgal) {
 					 case 0:
@@ -219,23 +205,28 @@ public class SyncEsclave {
 						 estExistant = true;
 					 }
 				 }
-				 // Sinon le fichier n'existe pas et sera à créer 
+				 // Sinon le fichier n'existe pas et sera Ã  crÃ©er 
 				 else {
 					 estExistant = false;
 				 }
 			}
+			
+	//		System.out.println("******Boucle for 1 finie. \n **estExistant :" + estExistant + "\n **aModif :" + aModif);
 			// Une fois qu'on a parcouru tous les fichiers du client
 			// On ajoute aux listes 
 			if ( aModif == true) {
 				fichiersARemplacer.add(s);
+				System.out.println("On doit le remplacer");
 			}
 			else {
 				if (estExistant == false) {
 					fichiersNonExistants.add(s);
+					System.out.println("On doir le crÃ©er");
 				}
+								
 			}
 		}
-	}
+	}	
 
 		
 }
