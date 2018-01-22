@@ -121,7 +121,7 @@ public class SyncEsclave {
 			listMeta.add(m);
 			ligneMeta = inFromServer.readLine();
 		}
-		
+
 		return listMeta;
 	}
 	
@@ -228,5 +228,25 @@ public class SyncEsclave {
 		}
 	}	
 
+	
+	// Envoi au serveur des noms de fichiers à récupérer
+	public void envoiNomFichiers() throws IOException {
 		
+		for (Metadonnee m : fichiersNonExistants) {
+			outToServer.writeBytes(m.name +"\n");
+		}
+		for (Metadonnee n : fichiersARemplacer) {
+			outToServer.writeBytes(n.name +"\n");
+		}		
+		
+		outToServer.writeBytes("STOP\n");
+	}
+	
+	
+	
+	// Reception des fichiers du serveur à créer/modif dans le repertoire cible
+	// Selon le mode choisi, les fichiers seront modif ou écrasé
+	public void receptionFichiers () {
+		
+	}
 }

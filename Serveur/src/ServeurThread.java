@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ServeurThread extends Thread{
 	private Socket connectionSocket;
 	DataOutputStream outToClient; 
+	BufferedReader inFromClient;
 
 	public ServeurThread(Socket connectionSocket) throws IOException{
 		this.connectionSocket=connectionSocket;
@@ -33,8 +34,7 @@ public class ServeurThread extends Thread{
 	}
 
 
-
-	// POUR VENDREDI : FINIR RECUPERATION METADONNEES ET ENVOI + ENVOI FICHIERS	fonction rec(Dossier Source){
+	// Envoi des métadonnées au client 
 	public void recEnvoi	(String dossierSource) throws IOException {
 		File [] fichiers;
 		ArrayList<File> listFichier = new ArrayList<File>();
@@ -60,8 +60,35 @@ public class ServeurThread extends Thread{
 		}
 	}
 
-	// Envoi les fichiers au client
-	public void envoiFichiers(String repertoireSource) {
-
+	// Reception des noms des fichier à envoyer
+	// Retourne une arrayList avec les noms 
+	public ArrayList<String> receptionNom (String dossierSource) throws IOException {
+		ArrayList<String> listNom = new ArrayList<String>();
+		String noms = new String();
+		
+		noms = inFromClient.readLine();		
+		while (!noms.equals("STOP")) {
+			// Ajout du nom à la liste
+			listNom.add(noms);
+		}		
+		return listNom;
+	}
+	
+	
+	// Parcours des fichiers à partir du dossier source et liste des noms 
+	// Ajout des fichiers dont le nom est dans la listeNom à la liste de fichiers
+	public ArrayList<File> fichiersAEnvoyer (String dossierSource, ArrayList<String> listNom){
+		ArrayList<File> listFichier = new ArrayList<File>();
+		File currentFile = new File(dossierSource);
+		
+		
+		// Parcours du fichier 
+		
+		return listFichier;
+	}
+	
+	// Envoi les fichiers de la liste fichiers au client
+	public void envoiFichiers(String repertoireSource, ArrayList<File> listFile) {
+		
 	}
 }
