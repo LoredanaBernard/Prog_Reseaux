@@ -6,9 +6,10 @@ public class Metadonnee {
 	public long size;
 	public long lastModif;
 	
-	public Metadonnee(String n, String path, String size, String modif) {
+	public Metadonnee(String p, String n, String modif, String size) {
 		this.name = n;
-		this.path = path;
-		
+		this.path = p;
+		this.size = Long.parseLong(size);
+		this.lastModif = Long.parseLong(modif);
 	}
 }
