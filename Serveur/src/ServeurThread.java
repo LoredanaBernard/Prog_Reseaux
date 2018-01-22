@@ -75,20 +75,49 @@ public class ServeurThread extends Thread{
 	}
 	
 	
+	public void rec( String chemin, ArrayList<String> listNom, ArrayList<File> listFichierAEnvoyer) {
+		ArrayList<File> listFile = new ArrayList<File>();
+		File currentFile = new File(chemin);
+		File [] fichiers;
+		fichiers = currentFile.listFiles();
+		
+		for ( int i=0 ; i<fichiers.length ; i ++) {
+			listFile.add(fichiers[i]);
+		}
+		for(File f : listFile){
+			if ( f.isDirectory()){
+				rec(f.getPath(), listNom, listFichierAEnvoyer);
+			}
+			else{
+				for ( String nom : listNom) {
+					// Si le nom du fichier correspond à un nom de la liste en param
+					if (f.getName().equals(nom)) {
+						listFichierAEnvoyer.add(f);
+					}
+				}
+			
+			}
+			}
+	}
+	// TO DO VERIFICATIONS
 	// Parcours des fichiers à partir du dossier source et liste des noms 
 	// Ajout des fichiers dont le nom est dans la listeNom à la liste de fichiers
-	public ArrayList<File> fichiersAEnvoyer (String dossierSource, ArrayList<String> listNom){
-		ArrayList<File> listFichier = new ArrayList<File>();
-		File currentFile = new File(dossierSource);
+	public ArrayList<File> fichiersAEnvoyer (String dossierSource, ArrayList<String> listNom) throws IOException{
+		ArrayList<File> listFichierAEnvoyer = new ArrayList<File>();
 		
+		rec(dossierSource, listNom, listFichierAEnvoyer);
+		// Verif que listFichierAEnvoyer a bien changé
+		// Sinon le passer en paramètre 
 		
-		// Parcours du fichier 
-		
-		return listFichier;
+		return listFichierAEnvoyer;
 	}
 	
+	// TO DO ENVOI FICHIERS
 	// Envoi les fichiers de la liste fichiers au client
 	public void envoiFichiers(String repertoireSource, ArrayList<File> listFile) {
 		
+		for ( File f : listFile) {
+			
+		}
 	}
 }
