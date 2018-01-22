@@ -86,14 +86,26 @@ public class SyncEsclave {
 		}
 	}
 	
-	//public boolean comparerMetadonnes() {
+	/*public boolean comparerMetadonnes(String metaDonnee) {
+		//File file = new file(arg[3]);
+		String filepath  metadonnee;
+		FileReader donnee = new FileReader(filepath);
+		BufferedReader stock = new BufferedReader(donnee);
 		
-//	}
+		String line = br.readLine();
+		while(line != null ) {
+			System.out.println(line);
+		}
+		String chemin = donnees.getPath();
+		String name = donnees.getName();
+		long lastModif =  donnees.lastModified();
+		long sizeFile  = donnees.length();
+	}*/
 	
 	public static void main(String[] args) throws IOException {
 		
 		SyncEsclave test = new SyncEsclave(args);
-		test.send("D:/ENSIM/Projet");
+		test.send("H:/Mes documents/4A/Prog_Concurrente");
 		while(true) {
 		//	System.out.println(test.inFromServer.readLine());
 			listeMetadonnees = receptionMedadonnees();
